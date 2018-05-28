@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5)
 project(avr_temperature_sensor)
 
 set(CMAKE_CXX_STANDARD 14)
+set(ARDUINO_DEVICE_PORT /dev/ttyACM0)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-threadsafe-statics")
 
@@ -21,6 +22,6 @@ add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
         COMMAND avr-objcopy -j .text -j .data -O ihex ${CMAKE_PROJECT_NAME}.elf ${CMAKE_PROJECT_NAME}.hex)
 
 add_custom_target(flash-arduino
-        COMMAND avrdude -v -p atmega328p -P /dev/ttyACM0 -c arduino -b 115200 -D -U flash:w:${CMAKE_PROJECT_NAME}.hex:i
+        COMMAND avrdude -v -p atmega328p -P ${ARDUINO_DEVICE_PORT} -c arduino -b 115200 -D -U flash:w:${CMAKE_PROJECT_NAME}.hex:i
         DEPENDS ${CMAKE_PROJECT_NAME}
         VERBATIM)
