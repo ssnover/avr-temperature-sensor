@@ -8,8 +8,6 @@
 
 #include "stdint.h" // It is incredibly annoying that there is no cstdint in avr-libc
 
-namespace SNO
-{
 
 class SYSTEM_TICK final
 {
@@ -57,6 +55,5 @@ private:
     bool my_running_state; // Sets whether the system tick is running or not
 };
 
-} // namespace SNO
 
 #endif //AVR_TEMPERATURE_SENSOR_SYSTEM_TICK_HPP

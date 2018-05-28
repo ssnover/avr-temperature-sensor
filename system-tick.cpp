@@ -10,23 +10,8 @@
 
 namespace
 {
-volatile uint32_t number_of_ticks_occurred(0);
-} // anonymous namespace
-
-/*
- * Interrupt for handling the system tick events.
- */
-ISR(TIMER1_COMPA_vect)
-{
-    number_of_ticks_occurred++;
-}
-
-namespace SNO
-{
-
-namespace
-{
 constexpr uint32_t DEFAULT_PERIOD_MICROSECONDS(1000U);
+volatile uint32_t number_of_ticks_occurred(0);
 
 void enable_timer1()
 {
@@ -43,6 +28,16 @@ void disable_timer1()
     TCCR1B &= ~(1u << CS12 | 1u << CS11 << 1u << CS10);
 }
 } // anonymous namespace
+
+
+/*
+ * Interrupt for handling the system tick events.
+ */
+/*extern "C" */ ISR(TIMER1_COMPA_vect)
+{
+    number_of_ticks_occurred++;
+}
+
 
 SYSTEM_TICK::SYSTEM_TICK(uint32_t period_us) : my_period_microseconds(period_us)
 {
@@ -109,5 +104,3 @@ bool SYSTEM_TICK::waitForTick()
 
     return retVal;
 }
-
-} // namespace SNO
