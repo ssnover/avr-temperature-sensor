@@ -4,16 +4,16 @@ project(avr_temperature_sensor)
 set(CMAKE_CXX_STANDARD 14)
 set(ARDUINO_DEVICE_PORT /dev/ttyACM0)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-threadsafe-statics")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-threadsafe-statics -flto -mmcu=atmega328p -Wall -Wextra -O2")
 
 add_executable(${CMAKE_PROJECT_NAME}
         main.cpp
         led.hpp led.cpp
         system-tick.hpp system-tick.cpp
         )
+
 # Mark this as a project using the AVR ATmega328P microcontroller
-add_definitions(-D__AVR_ATmega328P__)
-target_compile_options(${CMAKE_PROJECT_NAME} PUBLIC -lstdc++)
+add_definitions(-D__AVR_ATmega328P__ -DF_CPU=16000000UL)
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
         OUTPUT_NAME ${CMAKE_PROJECT_NAME}.elf
         COMPILE_FLAGS "-save-temps"
